@@ -1,0 +1,7 @@
+CompileFlags:
+  CompilationDatabase: cmake-build-debug-linux
+  Add: [-std=c++23]
+  Remove:
+    - -fmodules-ts
+    - -fmodule-mapper=*
+    - -fdeps-format=*

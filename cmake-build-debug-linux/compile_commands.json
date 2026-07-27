@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/skye/Code/C++/SlushEngine/cmake-build-debug-linux",
+  "command": "/usr/bin/c++ -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -DUSE_LIBTYPE_SHARED  -g -std=gnu++23 -o CMakeFiles/raylib_game.dir/src/main.cpp.o -c /home/skye/Code/C++/SlushEngine/src/main.cpp",
+  "file": "/home/skye/Code/C++/SlushEngine/src/main.cpp",
+  "output": "CMakeFiles/raylib_game.dir/src/main.cpp.o"
+}
+]
