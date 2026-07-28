@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 4.1)  
-project(raylib_game)
+project(SlushEngine)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set (CMAKE_CXX_STANDARD 23)
+set (CMAKE_C_STANDARD 11)
 
 set(RAYLIB_VERSION 5.5)
 find_package(raylib ${RAYLIB_VERSION} QUIET)
@@ -22,7 +22,8 @@ if (NOT raylib_FOUND)
 endif()
 
 
-add_executable(${PROJECT_NAME} src/main.cpp
+add_executable(${PROJECT_NAME} src/main.c
+    src/application.c
 )
 target_link_libraries(${PROJECT_NAME} raylib)
 
