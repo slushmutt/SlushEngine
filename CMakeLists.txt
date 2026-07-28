@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 4.1)
 project(SlushEngine)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set (CMAKE_C_STANDARD 11)
+set (CMAKE_CXX_STANDARD 23)
 
 set(RAYLIB_VERSION 5.5)
 find_package(raylib ${RAYLIB_VERSION} QUIET)
