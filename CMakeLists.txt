@@ -22,8 +22,9 @@ if (NOT raylib_FOUND)
 endif()
 
 
-add_executable(${PROJECT_NAME} src/main.c
-    src/application.c
+add_executable(${PROJECT_NAME} src/main.cpp
+    src/application.cpp
+    src/slush_core.cpp
 )
 target_link_libraries(${PROJECT_NAME} raylib)
 

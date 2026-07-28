@@ -1,5 +1,7 @@
+#include <print>
 #include <raylib.h>
 #include "application.h"
+#include "slush_core.h"
 /**
  *Creates a window and locks the fps.
 */
