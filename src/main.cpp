@@ -1,8 +1,10 @@
 #include <raylib.h>
-#include <stdio.h>
-#include "application.h"
+#include "SlushEngine/application.h"
+
+using namespace SlushEngine;
 
 int main(void) {
-    initialize_window(1280, 720, 60, "Game Engine");
+    Application application; 
+    application.Initialize(1280, 720, 60, "Game Engine");
     return 0;
 }

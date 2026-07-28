@@ -1,8 +1,8 @@
 #include <atomic>
 #include <cstdint>
-#include "slush_core.h"
+#include "core.h"
 
-int SlushCore::GetUniqueId(){
+int SlushEngine::Core::GetUniqueId(){
     static std::atomic<std::uint32_t> uid {0};
     return ++uid;
 }

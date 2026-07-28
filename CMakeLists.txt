@@ -23,8 +23,10 @@ endif()
 
 
 add_executable(${PROJECT_NAME} src/main.cpp
-    src/application.cpp
-    src/slush_core.cpp
+    src/SlushEngine/application.cpp
+    src/SlushEngine/core.cpp
+    src/SlushEngine/input.cpp
+    src/SlushEngine/rendering.cpp
 )
 target_link_libraries(${PROJECT_NAME} raylib)
 

@@ -1,19 +1,18 @@
 #include <print>
 #include <raylib.h>
 #include "application.h"
-#include "slush_core.h"
 /**
  *Creates a window and locks the fps.
 */
-void initialize_window(int width, int height, int fps, const char *window_title){
+void SlushEngine::Application::Initialize(int width, int height, int fps, const char *window_title){
     InitWindow(width, height, window_title);
     SetTargetFPS(fps);
-    application_loop();
+    Loop();
 }
 /**
  *Main application loop, handles the basic drawing and window closing logic.
  */
-void application_loop(){
+void SlushEngine::Application::Loop(){
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
