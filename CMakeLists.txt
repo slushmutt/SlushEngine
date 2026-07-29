@@ -24,9 +24,15 @@ endif()
 
 add_executable(${PROJECT_NAME} src/main.cpp
     src/SlushEngine/application.cpp
+    src/SlushEngine/scene.cpp  
     src/SlushEngine/core.cpp
     src/SlushEngine/input.cpp
     src/SlushEngine/rendering.cpp
+    src/SlushEngine/Components/game_object.cpp
+    src/SlushEngine/Components/component.cpp
+    src/SlushEngine/Components/transform.cpp  
+    src/SlushEngine/Components/mesh_renderer.cpp  
+    src/SlushEngine/Utility/raylib_extensions.cpp
 )
 target_link_libraries(${PROJECT_NAME} raylib)
 

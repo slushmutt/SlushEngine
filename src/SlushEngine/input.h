@@ -2,7 +2,7 @@
 namespace SlushEngine {
     class Input {
         public:
-            Vector2 AsVector2Composite(KeyboardKey up, KeyboardKey down, KeyboardKey left, KeyboardKey right); 
+            static Vector2 AsVector2Composite(KeyboardKey up, KeyboardKey down, KeyboardKey left, KeyboardKey right); 
         private:
     };
 
