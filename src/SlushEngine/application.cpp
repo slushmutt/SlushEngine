@@ -1,9 +1,11 @@
 #include <cstdlib>
 #include <ctime>
+#include <format>
 #include <memory>
 #include <print>
 #include <raylib.h>
 #include "application.h"
+#include <rlImGui.h>
 #include "Components/camera.h"
 #include "Components/game_object.h"
 #include <Jolt/Jolt.h>
@@ -24,6 +26,7 @@
 #include "Jolt/Physics/Body/BodyInterface.h"
 #include "Jolt/Physics/Body/MotionType.h"
 #include "core.h"
+#include "imgui.h"
 #include "input.h"
 #include "scene.h"
 #include "Utility/raylib_extensions.h"
@@ -34,25 +37,70 @@
 #include "Components/transform.h"
 #include "Components/mesh_renderer.h"
 
+void DebugWindow() {
+    bool is_visible = ImGui::Begin("Debug");
+    if (is_visible) 
+    {
+        if (SlushEngine::Core::active_scenes.empty()) {
+            ImGui::Text("No active scenes loaded.");
+        }
+        else 
+        {
+            static int selected_idx = 0;                                                                                                                   
+            if (ImGui::BeginListBox("Physics Objects", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))){
+                auto& objects = SlushEngine::Core::active_scenes.front()->GetObjects(); 
+                for(size_t n = 0; n < objects.size(); n++) {
+                    const bool is_selected = (selected_idx == n);
+                    ImGui::PushID(n);
+                    if (ImGui::Selectable(objects[n]->name.c_str(), is_selected)) {
+                        selected_idx = n;
+                    }
+                    
+                    if (is_selected) {          
+                        ImGui::SetItemDefaultFocus();                                                                                                                                                                           
+                        auto pos = objects[selected_idx]->GetComponent<SlushEngine::Transform>()->position;
+                        auto scale = objects[selected_idx]->GetComponent<SlushEngine::Transform>()->scale;
+                        std::println("pos {}", pos);
+                        ImGui::TextUnformatted(std::format("{}",pos).c_str());
+                    }                                                                                                                                                                                                           
+                    ImGui::PopID();                                                                                                                                                                                         
+                }                                                                                                                                                                                           
+                ImGui::EndListBox();                                                                                                                                                                        
+            }
+        }
+    }
+    ImGui::End();
+}
+
+
 void SlushEngine::Application::Initialize(int width, int height, int fps, const char *window_title){
-    srand(time(0));
-    JPH::RegisterDefaultAllocator();
+    srand(time(0)); // generate random seed for random numbers.
+    JPH::RegisterDefaultAllocator(); // allocate default memory for the physics system.
     InitWindow(width, height, window_title);
+    rlImGuiSetup(true);
     SetTargetFPS(fps);
+    //running awake on all game scripts and Components.
+    std::println("are we here 1");
     for(auto *behavior: SlushEngine::Core::active_behaviors){
             behavior->Awake();
         }
+
+    std::println("are we here 2");
         for(Scene *scene: SlushEngine::Core::active_scenes){
             scene->Awake();
         }
+
+    std::println("are we here 3");
+    // start the game loop
     Loop();
 }
 
 void SlushEngine::Application::Loop(){
+    // Initialize the physics system
     JPH::Factory::sInstance = new JPH::Factory();
     JPH::RegisterTypes();
 
-    JPH::TempAllocatorImpl temp_allocator(10 * 8024 * 8024);
+    JPH::TempAllocatorImpl temp_allocator(10 * 1024 * 1024);
     JPH::JobSystemThreadPool job_system(JPH::cMaxPhysicsJobs, JPH::cMaxPhysicsBarriers, std::thread::hardware_concurrency() - 1);
     const uint c_max_bodies = 65536;
     const uint c_num_body_mutexes = 0;
@@ -73,6 +121,8 @@ void SlushEngine::Application::Loop(){
 	const float c_delta_time = 1.0f / 60.0f;
 	physics_system.OptimizeBroadPhase();
 
+    // calling start on all behaviors and components.
+    std::println("are we here 4");
     for(auto *behavior: SlushEngine::Core::active_behaviors){
             behavior->Start();
         }
@@ -82,12 +132,11 @@ void SlushEngine::Application::Loop(){
 
     float physics_accumulator = 0.0f;
     while(!WindowShouldClose()) {
+
         float dt = GetFrameTime(); 
         
         if (dt > 0.25f) dt = 0.25f; 
-        
         physics_accumulator += dt;
-        
 
         UpdateCamera(SlushEngine::Core::main_camera, CAMERA_FREE);
         while (physics_accumulator >= c_delta_time)
@@ -95,23 +144,39 @@ void SlushEngine::Application::Loop(){
             physics_system.Update(c_delta_time, 1, &temp_allocator, &job_system);
             physics_accumulator -= c_delta_time;
         }
+
+        std::println("are we here 5");
         BeginDrawing();
+        rlImGuiBegin();
+
+        // 3d setup
         BeginMode3D(*SlushEngine::Core::main_camera);
         ClearBackground(RAYWHITE);
+        // run update and physics update functions on all behaviors and components
+
+        std::println("are we here 6");
         for(auto *behavior: SlushEngine::Core::active_behaviors){
             behavior->Update(c_delta_time);
             behavior->PhysicsUpdate();
         }
+
+        std::println("are we here 7");
         for(Scene *scene: SlushEngine::Core::active_scenes){
             scene->Update(c_delta_time);
             scene->PhysicsUpdate();
         }
+        // end 3d rendering, anything past this point rendering wise will have to be 2d/UI or it will not show
         EndMode3D();
-        DrawFPS(0, 0);
+        // imgui
+        DebugWindow();
+        rlImGuiEnd();
         EndDrawing();
+
     }
-    CloseWindow();
+    // clean up memory
+    rlImGuiShutdown();
     JPH::UnregisterTypes();
     delete JPH::Factory::sInstance;
     JPH::Factory::sInstance = nullptr;
+    CloseWindow();
 }

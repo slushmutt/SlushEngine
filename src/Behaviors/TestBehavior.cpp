@@ -9,6 +9,7 @@
 #include <Jolt/Jolt.h>
 #include <Jolt/Physics/Collision/Shape/BoxShape.h>
 #include <cstdlib>
+#include <format>
 #include <memory>
 #include <print>
 #include <raylib.h>
@@ -34,12 +35,14 @@ void SpawnBox(Vector3 position, Vector3 scale, Color color){
     auto floor_mesh = floor_obj->AddComponent<SlushEngine::MeshRenderer>(GenMeshCube(1,1,1), LoadMaterialDefault());
     floor_rigidbody = floor_obj->AddComponent<SlushEngine::Rigidbody>(floor_transform, &f, SlushEngine::Core::body_interface, JPH::EMotionType::Static, SlushEngine::Layers::NON_MOVING, JPH::EActivation::DontActivate);
     floor_mesh->material.maps[MATERIAL_MAP_ALBEDO].color = color;
+    floor_obj->name = std::format("{} {}", "Floor", floor_obj->id);
     scene.AddObject(std::move(floor_obj));
 }
 void SceneSetup(){
     srand(time(0));
     camera_obj->name = "camera";
     camera_cam = camera_obj->AddComponent<SlushEngine::Camera>((Vector3){5,0,5}, 90);
+    camera_obj->AddComponent<SlushEngine::Transform>();
     camera = camera_cam->camera;
     SlushEngine::Core::main_camera = &camera;
 
@@ -55,7 +58,7 @@ void SceneSetup(){
     auto sphere_mesh = sphere_obj->AddComponent<SlushEngine::MeshRenderer>(GenMeshSphere(1,16,16), LoadMaterialDefault());
     sphere_rigidbody = sphere_obj->AddComponent<SlushEngine::Rigidbody>(sphere_transform, &s, SlushEngine::Core::body_interface, JPH::EMotionType::Dynamic, SlushEngine::Layers::MOVING, JPH::EActivation::Activate);
     sphere_mesh->material.maps[MATERIAL_MAP_ALBEDO].color = GREEN;
-
+    sphere_obj->name = std::format("{} {}", "sphere", sphere_obj->id);
     scene.AddObject(std::move(sphere_obj), std::move(camera_obj));
 }
 void SpawnSphere(){
@@ -69,13 +72,18 @@ void SpawnSphere(){
     auto mesh = obj->AddComponent<SlushEngine::MeshRenderer>(GenMeshSphere(1,16,16), LoadMaterialDefault());
     auto rigidbody = obj->AddComponent<SlushEngine::Rigidbody>(transform, &sp, SlushEngine::Core::body_interface, JPH::EMotionType::Dynamic, SlushEngine::Layers::MOVING, JPH::EActivation::Activate);
     mesh->material.maps[MATERIAL_MAP_ALBEDO].color = (Color){(unsigned char)(rand() % 255),(unsigned char)(rand() % 255),(unsigned char)(rand() % 255),255};
+    obj->name = std::format("{} {}", "Sphere", obj->id);
     scene.AddObject(std::move(obj));
 }
 void TestBehavior::Start(){
     SceneSetup();
 }
+bool c = false;
 void TestBehavior::Update(float dt){
-    DisableCursor();
+    if(IsKeyPressed(KEY_TAB)) {
+        c ? DisableCursor() : EnableCursor();
+        c = !c;
+    }
     Vector2 input = SlushEngine::Input::AsVector2Composite(KEY_W, KEY_S, KEY_A, KEY_D);
     SlushEngine::Core::body_interface->SetPosition(sphere_rigidbody->body->GetID(),  ToJolt(camera.position), JPH::EActivation::DontActivate);
     if(IsKeyDown(KEY_SPACE)){

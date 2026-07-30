@@ -1,11 +1,12 @@
 #include "scene.h"
 #include "Components/component.h"
 #include "Components/game_object.h"
+#include "Components/transform.h"
 #include <memory>
 #include <print>
 #include <vector>
 #include "core.h"
-
+#include "Utility/raylib_extensions.h"
 SlushEngine::Scene::Scene(){
     SlushEngine::Core::active_scenes.push_back(this);
 }
@@ -18,6 +19,7 @@ const std::vector<std::unique_ptr<SlushEngine::GameObject>>& SlushEngine::Scene:
 }
 void SlushEngine::Scene::Update(float dt){
     for(auto &obj: objects) {
+        std::println("{}", obj->GetComponent<SlushEngine::Transform>()->position);
         for(const auto &component: obj->GetComponents()){
             component.second->Update(dt);
         }

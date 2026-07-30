@@ -1,5 +1,5 @@
 #include "SlushEngine/application.h"
-
+#include <rlImGui.h>
 
 int main(void) {
     SlushEngine::Application application; 
