@@ -1,6 +1,8 @@
+#include <cmath>
 #include <cstdlib>
 #include <ctime>
 #include <format>
+#include <memory>
 #include <print>
 #include <raylib.h>
 #include "application.h"
@@ -19,7 +21,10 @@
 #include <Jolt/Physics/Body/BodyActivationListener.h>
 #include <raymath.h>
 #include <thread>
+#include "Jolt/Math/Vec3.h"
 #include "Jolt/Physics/Body/BodyInterface.h"
+#include "Jolt/Physics/EActivation.h"
+#include "SlushEngine/Components/rigidbody.h"
 #include "SlushEngine/debug.h"
 #include "core.h"
 #include "imgui.h"
@@ -42,7 +47,7 @@ void DebugWindow() {
         else 
         {
             static int selected_idx = 0;                                                                                                                   
-            if (ImGui::BeginListBox("Physics Objects", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))){
+            if (ImGui::BeginListBox("Physics Objects", ImVec2(-FLT_MIN, 80 * ImGui::GetTextLineHeightWithSpacing()))){
                 auto& objects = SlushEngine::Core::active_scenes.front()->GetObjects(); 
                 for(size_t n = 0; n < objects.size(); n++) {
                     const bool is_selected = (selected_idx == n);
@@ -54,8 +59,21 @@ void DebugWindow() {
                     if (is_selected) {          
                         ImGui::SetItemDefaultFocus();                                                                                                                                                                           
                         auto pos = objects[selected_idx]->GetComponent<SlushEngine::Transform>()->position;
+                        pos.x = round(pos.x);
+                        pos.y = round(pos.y);
+                        pos.z = round(pos.z);
                         auto scale = objects[selected_idx]->GetComponent<SlushEngine::Transform>()->scale;
-                        ImGui::TextUnformatted(std::format("{}",pos).c_str());
+                        scale.x = round(pos.x);
+                        scale.y = round(pos.y);
+                        scale.z = round(pos.z);
+                        auto rotation = objects[selected_idx]->GetComponent<SlushEngine::Transform>()->EulerAngles(true);
+                        rotation.x = round(rotation.x);
+                        rotation.y = round(rotation.y);
+                        rotation.z = round(rotation.z);
+                        ImGui::TextUnformatted(std::format("Position {}, Rotation {} Scale {}",pos, rotation,scale).c_str());
+                        if(ImGui::Button("Reset Position")){
+                            SlushEngine::Core::body_interface->SetPosition(objects[selected_idx]->GetComponent<SlushEngine::Rigidbody>()->body->GetID(), JPH::Vec3(0,0,0), JPH::EActivation::Activate);
+                        };
                     }                                                                                                                                                                                                           
                     ImGui::PopID();                                                                                                                                                                                         
                 }                                                                                                                                                                                           
@@ -68,18 +86,13 @@ void DebugWindow() {
 
 
 void SlushEngine::Application::Initialize(int width, int height, int fps, const char *window_title){
-    SetTraceLogLevel(LOG_FATAL); 
     // check for most deadly issues that are hard to debug.
-    SlushEngine::Core::active_behaviors.size() <= 0 ? SlushEngine::Debug::Fatal("No behaviors found, aborting...") : SlushEngine::Debug::Success("At least one behavior was loaded!"); 
-    SlushEngine::Core::active_scenes.size() <= 0 ? SlushEngine::Debug::Fatal("No scenes found, aborting...") : SlushEngine::Debug::Success("At least one scene was loaded!"); 
+    SlushEngine::Core::active_behaviors.size() <= 0 ? SlushEngine::Debug::Fatal("No behaviors found, aborting...") : void(); 
+    SlushEngine::Core::active_scenes.size() <= 0 ? SlushEngine::Debug::Fatal("No scenes found, aborting...") : void(); 
     srand(time(0)); // generate random seed for random numbers.
     JPH::RegisterDefaultAllocator(); // allocate default memory for the physics system.
+    SetConfigFlags(FLAG_FULLSCREEN_MODE);  
     InitWindow(width, height, window_title);
-    SlushEngine::Debug::Info("SlushEngine window created.");
-    rlImGuiSetup(true);
-    SlushEngine::Debug::Info("rlImGui loaded successfully.");
-    SetTargetFPS(fps);
-
     //running awake on all game scripts and Components.
     for(auto *behavior: SlushEngine::Core::active_behaviors){
             behavior->Awake();
@@ -87,6 +100,12 @@ void SlushEngine::Application::Initialize(int width, int height, int fps, const 
         for(Scene *scene: SlushEngine::Core::active_scenes){
             scene->Awake();
         }
+    SlushEngine::Debug::Info("SlushEngine window created.");
+    rlImGuiSetup(true);
+    SlushEngine::Debug::Info("rlImGui loaded successfully.");
+    SetTargetFPS(fps);
+
+
     // start the game loop
     Loop();
 }
@@ -133,7 +152,6 @@ void SlushEngine::Application::Loop(){
         if (dt > 0.25f) dt = 0.25f; 
         physics_accumulator += dt;
 
-        UpdateCamera(SlushEngine::Core::main_camera, CAMERA_FREE);
         while (physics_accumulator >= c_delta_time)
         {
             physics_system.Update(c_delta_time, 1, &temp_allocator, &job_system);

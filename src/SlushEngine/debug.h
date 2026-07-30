@@ -55,55 +55,77 @@ namespace SlushEngine {
 
                 auto format_args =  std::make_format_args(args...);
                 std::string message = std::vformat(fmt, format_args);
-                !show_path ? std::println("{}", message) : std::println("{} at{}", message, path); 
+                std::time_t now = std::time(nullptr);
+                std::tm* local_time = std::localtime(&now);
+                !show_path ? std::println("[{:02}:{:02}:{:02}{}]{}", 
+                        local_time->tm_hour % 12, local_time->tm_min, local_time->tm_sec, local_time->tm_hour > 12 && local_time->tm_hour < 24 ? "pm" : "am", message) : std::println("[{:02}:{:02}:{:02}{}]{} at{}", 
+                        local_time->tm_hour % 12, local_time->tm_min, local_time->tm_sec, local_time->tm_hour > 12 && local_time->tm_hour < 24 ? "pm" : "am", message, path); 
             }
         }  // namespace impl
 
-        namespace Debug {
+        class Debug {
+            public:
+            enum LogLevel{
+                LogLevelNone = 6,
+                LogLevelFatal = 5,
+                LogLevelError = 4,
+                LogLevelWarning = 3,
+                LogLevelInfo = 2,
+                LogLevelAll= 1
+            };
+            static inline LogLevel LogLevel;
+
             template <typename... T>
-            void Log(impl::LogFormat format_with_loc, T&&... args) {
+            static void Log(impl::LogFormat format_with_loc, T&&... args) {
               impl::LogMessage(false, DebugColors::reset, format_with_loc.loc, format_with_loc.fmt, std::forward<T>(args)...);
             }
 
             template <typename... T>
-            void Info(impl::LogFormat format_with_loc, T&&... args) {
+            static void Info(impl::LogFormat format_with_loc, T&&... args) {
                 std::string dynamic_fmt = std::format("{}{}{}{}", 
                 DebugColors::blue, "[INFO] ", format_with_loc.fmt, DebugColors::reset);
 
-                impl::LogMessage(false, DebugColors::other_blue, format_with_loc.loc, dynamic_fmt, std::forward<T>(args)...);        
+                if(LogLevel <= 2)
+                    impl::LogMessage(false, DebugColors::other_blue, format_with_loc.loc, dynamic_fmt, std::forward<T>(args)...);        
             }
 
             template <typename... T>
-            void Warning(impl::LogFormat format_with_loc, T&&... args) {
+            static void Warning(impl::LogFormat format_with_loc, T&&... args) {
                 std::string dynamic_fmt = std::format("{}{}{}{}", 
                 DebugColors::yellow, "[WARNING] ", format_with_loc.fmt, DebugColors::reset);
 
-                impl::LogMessage(false, DebugColors::other_yellow, format_with_loc.loc, dynamic_fmt, std::forward<T>(args)...);        
+
+                if(LogLevel <= 3)
+                    impl::LogMessage(false, DebugColors::other_yellow, format_with_loc.loc, dynamic_fmt, std::forward<T>(args)...);        
             }
 
             template <typename... T>
-            void Error(impl::LogFormat format_with_loc, T&&... args) {
+            static void Error(impl::LogFormat format_with_loc, T&&... args) {
                 std::string dynamic_fmt = std::format("{}{}{}{}", 
                 DebugColors::red, "[ERROR] ", format_with_loc.fmt, DebugColors::reset);
 
-                impl::LogMessage(true, DebugColors::other_red, format_with_loc.loc, dynamic_fmt, std::forward<T>(args)...);        
+                if(LogLevel <= 4)
+                    impl::LogMessage(true, DebugColors::other_red, format_with_loc.loc, dynamic_fmt, std::forward<T>(args)...);        
             }
             template <typename... T>
-            void Fatal(impl::LogFormat format_with_loc, T&&... args) {
+            static void Fatal(impl::LogFormat format_with_loc, T&&... args) {
                 std::string dynamic_fmt = std::format("{}{}{}{}", 
                 DebugColors::dark_red, "[FATAL] ", format_with_loc.fmt, DebugColors::reset);
 
-                impl::LogMessage(true, DebugColors::other_dark_red, format_with_loc.loc, dynamic_fmt, std::forward<T>(args)...);        
+
+                if(LogLevel <= 5)
+                    impl::LogMessage(true, DebugColors::other_dark_red, format_with_loc.loc, dynamic_fmt, std::forward<T>(args)...);        
                 abort();
             }
 
             template <typename... T>
-            void Success(impl::LogFormat format_with_loc, T&&... args) {
+            static void Success(impl::LogFormat format_with_loc, T&&... args) {
                 std::string dynamic_fmt = std::format("{}{}{}{}", 
                 DebugColors::green, "[SUCCESS] ", format_with_loc.fmt, DebugColors::reset);
 
-                impl::LogMessage(false, DebugColors::other_green, format_with_loc.loc, dynamic_fmt, std::forward<T>(args)...);        
+                if(LogLevel <= 1)
+                    impl::LogMessage(false, DebugColors::other_green, format_with_loc.loc, dynamic_fmt, std::forward<T>(args)...);        
             }
 
-        }  
+        };  
 }

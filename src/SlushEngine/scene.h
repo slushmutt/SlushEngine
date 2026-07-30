@@ -14,7 +14,7 @@ namespace SlushEngine {
                 }
                 return true;
             }
-            const std::vector<std::unique_ptr<GameObject>>& GetObjects();
+            std::vector<std::unique_ptr<GameObject>>& GetObjects();
             void Update(float dt);
             void PhysicsUpdate();
             void Start();

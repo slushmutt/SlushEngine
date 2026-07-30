@@ -14,7 +14,7 @@ SlushEngine::Scene::~Scene(){
     std::erase(SlushEngine::Core::active_scenes, this);
 }
 
-const std::vector<std::unique_ptr<SlushEngine::GameObject>>& SlushEngine::Scene::GetObjects(){
+std::vector<std::unique_ptr<SlushEngine::GameObject>>& SlushEngine::Scene::GetObjects(){
     return objects;
 }
 void SlushEngine::Scene::Update(float dt){

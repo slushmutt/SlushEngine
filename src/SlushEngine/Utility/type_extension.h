@@ -9,6 +9,6 @@ constexpr std::string_view get_type_name() {
     std::string_view name = __PRETTY_FUNCTION__;
     #endif
     
-    name = name.substr(name.find_first_of('T') + 3, name.find_first_of(';') - name.find_first_of('T') - 3);
+    name = name.substr(name.find_first_of('T') + 4, name.find_first_of(';') - name.find_first_of('T') - 4);
     return name;
 }

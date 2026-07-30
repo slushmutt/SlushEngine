@@ -1,4 +1,5 @@
 #include "mesh_renderer.h"
+#include "SlushEngine/debug.h"
 #include "rigidbody.h"
 #include <print>
 #include <raylib.h>
@@ -12,8 +13,16 @@ SlushEngine::MeshRenderer::MeshRenderer(Mesh Mesh, Material Material){
     material = Material;
 }
 void SlushEngine::MeshRenderer::Update(float dt){
-    SlushEngine::Rigidbody *rigidbody = owner->GetComponent<Rigidbody>();
-    SlushEngine::Transform *transform = owner->GetComponent<Transform>();
+    SlushEngine::Rigidbody *rigidbody;  
+    if(!owner->TryGetComponent<Rigidbody>(rigidbody)){
+        SlushEngine::Debug::Warning("Cannot continue in this method on {} Id: {}, a Transform was not found.", owner->name, owner->id);
+        return;
+    }
+    SlushEngine::Transform *transform; 
+    if (!owner->TryGetComponent<Transform>(transform)){
+        SlushEngine::Debug::Warning("Cannot continue in this method on {} Id: {}, a Transform was not found.", owner->name, owner->id);
+        return;
+    }
     Matrix rotation = QuaternionToMatrix(ToRayLib(rigidbody->body->GetRotation()));  
     Matrix position = MatrixTranslate(
             rigidbody->body->GetPosition().GetX(), 
