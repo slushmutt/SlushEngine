@@ -1,12 +1,10 @@
 #include <cstdlib>
 #include <ctime>
 #include <format>
-#include <memory>
 #include <print>
 #include <raylib.h>
 #include "application.h"
 #include <rlImGui.h>
-#include "Components/camera.h"
 #include "Components/game_object.h"
 #include <Jolt/Jolt.h>
 #include <Jolt/RegisterTypes.h>
@@ -21,10 +19,8 @@
 #include <Jolt/Physics/Body/BodyActivationListener.h>
 #include <raymath.h>
 #include <thread>
-#include "Components/mesh_renderer.h"
-#include "Components/rigidbody.h"
 #include "Jolt/Physics/Body/BodyInterface.h"
-#include "Jolt/Physics/Body/MotionType.h"
+#include "SlushEngine/debug.h"
 #include "core.h"
 #include "imgui.h"
 #include "input.h"
@@ -35,7 +31,6 @@
 #include "Components/game_object.h"
 #include "Components/component.h"
 #include "Components/transform.h"
-#include "Components/mesh_renderer.h"
 
 void DebugWindow() {
     bool is_visible = ImGui::Begin("Debug");
@@ -60,7 +55,6 @@ void DebugWindow() {
                         ImGui::SetItemDefaultFocus();                                                                                                                                                                           
                         auto pos = objects[selected_idx]->GetComponent<SlushEngine::Transform>()->position;
                         auto scale = objects[selected_idx]->GetComponent<SlushEngine::Transform>()->scale;
-                        std::println("pos {}", pos);
                         ImGui::TextUnformatted(std::format("{}",pos).c_str());
                     }                                                                                                                                                                                                           
                     ImGui::PopID();                                                                                                                                                                                         
@@ -74,23 +68,25 @@ void DebugWindow() {
 
 
 void SlushEngine::Application::Initialize(int width, int height, int fps, const char *window_title){
+    SetTraceLogLevel(LOG_FATAL); 
+    // check for most deadly issues that are hard to debug.
+    SlushEngine::Core::active_behaviors.size() <= 0 ? SlushEngine::Debug::Fatal("No behaviors found, aborting...") : SlushEngine::Debug::Success("At least one behavior was loaded!"); 
+    SlushEngine::Core::active_scenes.size() <= 0 ? SlushEngine::Debug::Fatal("No scenes found, aborting...") : SlushEngine::Debug::Success("At least one scene was loaded!"); 
     srand(time(0)); // generate random seed for random numbers.
     JPH::RegisterDefaultAllocator(); // allocate default memory for the physics system.
     InitWindow(width, height, window_title);
+    SlushEngine::Debug::Info("SlushEngine window created.");
     rlImGuiSetup(true);
+    SlushEngine::Debug::Info("rlImGui loaded successfully.");
     SetTargetFPS(fps);
+
     //running awake on all game scripts and Components.
-    std::println("are we here 1");
     for(auto *behavior: SlushEngine::Core::active_behaviors){
             behavior->Awake();
         }
-
-    std::println("are we here 2");
         for(Scene *scene: SlushEngine::Core::active_scenes){
             scene->Awake();
         }
-
-    std::println("are we here 3");
     // start the game loop
     Loop();
 }
@@ -120,16 +116,15 @@ void SlushEngine::Application::Loop(){
     SlushEngine::Core::body_interface = &body_interface;
 	const float c_delta_time = 1.0f / 60.0f;
 	physics_system.OptimizeBroadPhase();
+    SlushEngine::Debug::Info("Physics Engine intialized properly.");
 
     // calling start on all behaviors and components.
-    std::println("are we here 4");
     for(auto *behavior: SlushEngine::Core::active_behaviors){
             behavior->Start();
         }
         for(Scene *scene: SlushEngine::Core::active_scenes){
             scene->Start();
         }
-
     float physics_accumulator = 0.0f;
     while(!WindowShouldClose()) {
 
@@ -145,7 +140,6 @@ void SlushEngine::Application::Loop(){
             physics_accumulator -= c_delta_time;
         }
 
-        std::println("are we here 5");
         BeginDrawing();
         rlImGuiBegin();
 
@@ -154,13 +148,11 @@ void SlushEngine::Application::Loop(){
         ClearBackground(RAYWHITE);
         // run update and physics update functions on all behaviors and components
 
-        std::println("are we here 6");
         for(auto *behavior: SlushEngine::Core::active_behaviors){
             behavior->Update(c_delta_time);
             behavior->PhysicsUpdate();
         }
 
-        std::println("are we here 7");
         for(Scene *scene: SlushEngine::Core::active_scenes){
             scene->Update(c_delta_time);
             scene->PhysicsUpdate();

@@ -19,7 +19,6 @@ const std::vector<std::unique_ptr<SlushEngine::GameObject>>& SlushEngine::Scene:
 }
 void SlushEngine::Scene::Update(float dt){
     for(auto &obj: objects) {
-        std::println("{}", obj->GetComponent<SlushEngine::Transform>()->position);
         for(const auto &component: obj->GetComponents()){
             component.second->Update(dt);
         }

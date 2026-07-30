@@ -7,8 +7,8 @@ namespace SlushEngine {
         public: 
             std::string name;
             template<typename... Args>
-            bool AddObject(GameObject obj, Args... args){
-                objects.push_back(&obj);
+            bool AddObject(std::unique_ptr<GameObject> obj, Args... args){
+                objects.push_back(std::move(obj));
                 if constexpr (sizeof...(args) > 0) {
                     return AddObject(std::forward<Args>(args)...);
                 }
@@ -23,6 +23,6 @@ namespace SlushEngine {
             ~Scene();
         private:
             uint32_t id; 
-            std::vector<GameObject*> objects;
+            std::vector<std::unique_ptr<GameObject>> objects;
     };
 }

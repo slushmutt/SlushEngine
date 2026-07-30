@@ -9,7 +9,7 @@ SlushEngine::GameObject::GameObject(){
     name = std::format("Object: {}", id);
 }
 
-std::unordered_map<std::type_index, std::unique_ptr<SlushEngine::Component>>& SlushEngine::GameObject::GetComponents(){
+std::unordered_map<std::type_index, std::shared_ptr<SlushEngine::Component>>& SlushEngine::GameObject::GetComponents(){
     return Components;
 }
 

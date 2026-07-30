@@ -40,9 +40,9 @@ SlushEngine::Rigidbody::Rigidbody(Transform *transform, const JPH::ConvexShapeSe
 SlushEngine::Rigidbody::~Rigidbody(){}
 void SlushEngine::Rigidbody::Update(float dt){}
 void SlushEngine::Rigidbody::PhysicsUpdate(){
-    // Transform *transform = owner->GetComponent<Transform>(); 
-    // transform->position = ToRayLib(body->GetCenterOfMassPosition());
-    // transform->rotation = ToRayLib(body->GetRotation());
+    Transform *transform = owner->GetComponent<Transform>(); 
+    transform->position = ToRayLib(body->GetCenterOfMassPosition());
+    transform->rotation = ToRayLib(body->GetRotation());
 }
 void SlushEngine::Rigidbody::Start(){}
 void SlushEngine::Rigidbody::Awake(){}

@@ -88,9 +88,12 @@ add_executable(${PROJECT_NAME}
     src/SlushEngine/Components/camera.cpp
     src/SlushEngine/Components/rigidbody.cpp
     src/SlushEngine/Utility/raylib_extensions.cpp
+    src/SlushEngine/Utility/type_extension.cpp
     src/SlushEngine/physics.cpp
     src/SlushEngine/behavior.cpp
     src/SlushEngine/auto_register.cpp
+    src/SlushEngine/debug.cpp
+    src/SlushEngine/debug_colors.cpp
     src/Behaviors/TestBehavior.cpp
 )
 
