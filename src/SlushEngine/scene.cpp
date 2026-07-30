@@ -13,11 +13,6 @@ SlushEngine::Scene::~Scene(){
     std::erase(SlushEngine::Core::active_scenes, this);
 }
 
-bool SlushEngine::Scene::AddObject(std::unique_ptr<SlushEngine::GameObject> obj){
-    objects.push_back(std::move(obj));
-    return true;
-}
-
 const std::vector<std::unique_ptr<SlushEngine::GameObject>>& SlushEngine::Scene::GetObjects(){
     return objects;
 }
@@ -25,6 +20,13 @@ void SlushEngine::Scene::Update(float dt){
     for(auto &obj: objects) {
         for(const auto &component: obj->GetComponents()){
             component.second->Update(dt);
+        }
+    }
+}
+void SlushEngine::Scene::PhysicsUpdate(){
+    for(auto &obj: objects) {
+        for(const auto &component: obj->GetComponents()){
+            component.second->PhysicsUpdate();
         }
     }
 }

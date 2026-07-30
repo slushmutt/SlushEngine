@@ -10,6 +10,7 @@ namespace SlushEngine{
             virtual void Awake() {}
             virtual void Start() {}
             virtual void Update(float dt) {}
+            virtual void PhysicsUpdate() {}
     };
 }
 

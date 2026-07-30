@@ -1,6 +1,11 @@
 CompileFlags:
-  CompilationDatabase: cmake-build-debug-linux
-  Add: [-std=c++23]
+  CompilationDatabase: build
+  Add: [
+    -std=c++23,
+    -I /home/skye/Code/C/SlushEngine/build/_deps/jolt-src/,
+    -DJPH_DEBUG,
+    -DJPH_USE_AVX2,
+]
   Remove:
     - -fmodules-ts
     - -fmodule-mapper=*

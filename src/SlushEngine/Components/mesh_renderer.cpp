@@ -1,15 +1,27 @@
 #include "mesh_renderer.h"
-#include "transform.h"
+#include "rigidbody.h"
+#include <print>
 #include <raylib.h>
 #include <raymath.h>
 #include "game_object.h"
+#include "../Utility/raylib_extensions.h"
+#include "transform.h"
 
-SlushEngine::Transform *transform;
+SlushEngine::MeshRenderer::MeshRenderer(Mesh Mesh, Material Material){
+    mesh = Mesh;
+    material = Material;
+}
 void SlushEngine::MeshRenderer::Update(float dt){
-    transform = owner->GetComponent<Transform>();
-    Matrix rotation = QuaternionToMatrix(transform->rotation);  
-    Matrix position = MatrixTranslate(transform->position.x, transform->position.y, transform->position.z);
-    Matrix matrix = MatrixMultiply(position, rotation);
+    SlushEngine::Rigidbody *rigidbody = owner->GetComponent<Rigidbody>();
+    SlushEngine::Transform *transform = owner->GetComponent<Transform>();
+    Matrix rotation = QuaternionToMatrix(ToRayLib(rigidbody->body->GetRotation()));  
+    Matrix position = MatrixTranslate(
+            rigidbody->body->GetPosition().GetX(), 
+            rigidbody->body->GetPosition().GetY(), 
+            rigidbody->body->GetPosition().GetZ()
+        );
+    Matrix scale = MatrixScale(transform->scale.x, transform->scale.y, transform->scale.z);
+    Matrix matrix = MatrixMultiply(MatrixMultiply(scale, rotation), position);
     DrawMesh(mesh,material, matrix);
 }
 void SlushEngine::MeshRenderer::Start(){
@@ -18,3 +30,4 @@ void SlushEngine::MeshRenderer::Start(){
 void SlushEngine::MeshRenderer::Awake(){
 
 }
+void SlushEngine::MeshRenderer::PhysicsUpdate(){}

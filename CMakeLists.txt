@@ -21,6 +21,23 @@ if (NOT raylib_FOUND)
     endif()
 endif()
 
+include(FetchContent)
+FetchContent_Declare(
+    Jolt
+    URL https://github.com/jrouwe/JoltPhysics/archive/refs/tags/v5.6.0.tar.gz
+    SOURCE_SUBDIR Build
+)
+set(USE_ASSERTS OFF CACHE BOOL "" FORCE)
+set(TARGET_UNIT_TESTS OFF CACHE BOOL "" FORCE)
+set(TARGET_HELLO_WORLD OFF CACHE BOOL "" FORCE)
+set(TARGET_PERFORMANCE_TEST OFF CACHE BOOL "" FORCE)
+set(TARGET_SAMPLES OFF CACHE BOOL "" FORCE)
+set(TARGET_VIEWER OFF CACHE BOOL "" FORCE)
+set(JPH_USE_VK OFF CACHE BOOL "" FORCE)
+set(JPH_USE_DX12 OFF CACHE BOOL "" FORCE)
+set(JPH_USE_MTL OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(Jolt)
+
 
 add_executable(${PROJECT_NAME} src/main.cpp
     src/SlushEngine/application.cpp
@@ -32,9 +49,16 @@ add_executable(${PROJECT_NAME} src/main.cpp
     src/SlushEngine/Components/component.cpp
     src/SlushEngine/Components/transform.cpp  
     src/SlushEngine/Components/mesh_renderer.cpp  
+    src/SlushEngine/Components/camera.cpp  
+    src/SlushEngine/Components/rigidbody.cpp  
     src/SlushEngine/Utility/raylib_extensions.cpp
+    src/SlushEngine/physics.cpp
+    src/SlushEngine/behavior.cpp
+    src/SlushEngine/auto_register.cpp
+    src/Behaviors/TestBehavior.cpp
 )
 target_link_libraries(${PROJECT_NAME} raylib)
+target_link_libraries(${PROJECT_NAME} Jolt)
 
 if (DEFINED PLATFORM AND PLATFORM STREQUAL "Web")
     set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".html") # Tell Emscripten to build an example.html file.

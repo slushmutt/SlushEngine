@@ -6,9 +6,17 @@ namespace SlushEngine {
     class Scene{
         public: 
             std::string name;
-            bool AddObject(std::unique_ptr<SlushEngine::GameObject> obj);
+            template<typename... Args>
+            bool AddObject(std::unique_ptr<SlushEngine::GameObject> obj, Args... args){
+                objects.push_back(std::move(obj));
+                if constexpr (sizeof...(args) > 0) {
+                    return AddObject(std::forward<Args>(args)...);
+                }
+                return true;
+            }
             const std::vector<std::unique_ptr<GameObject>>& GetObjects();
             void Update(float dt);
+            void PhysicsUpdate();
             void Start();
             void Awake();
             Scene();
