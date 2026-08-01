@@ -6,7 +6,7 @@
 #include <SlushEngine/Components/game_object.h>
 #include <SlushEngine/Utility/raylib_extensions.h>
 #include <SlushEngine/Components/transform.h>
-
+#include <rendering.h>
 SlushEngine::MeshRenderer::MeshRenderer(Mesh Mesh, Material Material){
     mesh = Mesh;
     material = Material;
@@ -27,7 +27,12 @@ void SlushEngine::MeshRenderer::Update(float dt){
 
     Matrix scale = MatrixScale(transform->scale.x, transform->scale.y, transform->scale.z);
     Matrix matrix = MatrixMultiply(MatrixMultiply(scale, rotation), position);
-    DrawMesh(mesh,material, matrix);
+    Renderer::RendererParams Params = {
+        mesh,
+        material,
+        matrix
+    };
+    Renderer::AddToRenderQueue(Params);
 }
 void SlushEngine::MeshRenderer::Start(){
 }
