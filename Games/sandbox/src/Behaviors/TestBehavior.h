@@ -5,6 +5,7 @@ class TestBehavior: public SlushEngine::Behavior, private SlushEngine::AutoRegis
     public: 
         TestBehavior(){(void)registrar;}
         void Update(float dt) override;
+        void RenderUpdate() override;
         void Awake() override;
         void Start() override;
 };

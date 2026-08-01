@@ -8,6 +8,7 @@ namespace SlushEngine {
         public:
             virtual void Update(float dt);
             virtual void PhysicsUpdate();
+            virtual void RenderUpdate();
             virtual void Start();
             virtual void Awake();
     };

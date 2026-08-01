@@ -30,52 +30,7 @@
 #include <SlushEngine/Utility/raylib_extensions.h>
 #include <SlushEngine/behavior.h>
 
-void DebugWindow() {
-    bool is_visible = ImGui::Begin("Debug");
-    if (is_visible) 
-    {
-        if (SlushEngine::Core::active_scenes.empty()) {
-            ImGui::Text("No active scenes loaded.");
-        }
-        else 
-        {
-            static int selected_idx = 0;                                                                                                                   
-            if (ImGui::BeginListBox("Physics Objects", ImVec2(-FLT_MIN, 80 * ImGui::GetTextLineHeightWithSpacing()))){
-                auto& objects = SlushEngine::Core::active_scenes.front()->GetObjects(); 
-                for(size_t n = 0; n < objects.size(); n++) {
-                    const bool is_selected = (selected_idx == n);
-                    ImGui::PushID(n);
-                    if (ImGui::Selectable(objects[n]->name.c_str(), is_selected)) {
-                        selected_idx = n;
-                    }
-                    
-                    if (is_selected) {          
-                        ImGui::SetItemDefaultFocus();                                                                                                                                                                           
-                        auto pos = objects[selected_idx]->GetComponent<SlushEngine::Transform>()->position;
-                        pos.x = round(pos.x);
-                        pos.y = round(pos.y);
-                        pos.z = round(pos.z);
-                        auto scale = objects[selected_idx]->GetComponent<SlushEngine::Transform>()->scale;
-                        scale.x = round(pos.x);
-                        scale.y = round(pos.y);
-                        scale.z = round(pos.z);
-                        auto rotation = objects[selected_idx]->GetComponent<SlushEngine::Transform>()->EulerAngles(true);
-                        rotation.x = round(rotation.x);
-                        rotation.y = round(rotation.y);
-                        rotation.z = round(rotation.z);
-                        ImGui::TextUnformatted(std::format("Position {}, Rotation {} Scale {}",pos, rotation,scale).c_str());
-                        if(ImGui::Button("Reset Position")){
-                            SlushEngine::Core::body_interface->SetPosition(objects[selected_idx]->GetComponent<SlushEngine::Rigidbody>()->body->GetID(), JPH::Vec3(0,0,0), JPH::EActivation::Activate);
-                        };
-                    }                                                                                                                                                                                                           
-                    ImGui::PopID();                                                                                                                                                                                         
-                }                                                                                                                                                                                           
-                ImGui::EndListBox();                                                                                                                                                                        
-            }
-        }
-    }
-    ImGui::End();
-}
+
 
 
 void SlushEngine::Application::Initialize(int width, int height, int fps, const char *window_title){
@@ -171,7 +126,9 @@ void SlushEngine::Application::Loop(){
         // end 3d rendering, anything past this point rendering wise will have to be 2d/UI or it will not show
         EndMode3D();
         // imgui
-        DebugWindow();
+        for (auto *behavior: SlushEngine::Core::active_behaviors) {
+            behavior->RenderUpdate();
+        }
         rlImGuiEnd();
         EndDrawing();
 
