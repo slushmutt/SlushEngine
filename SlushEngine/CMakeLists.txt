@@ -14,6 +14,7 @@ target_sources(SlushEngine PRIVATE
     src/physics.cpp
     src/behavior.cpp
     src/auto_register.cpp
+    src/math.cpp
     src/debug.cpp
     src/debug_colors.cpp
     src/Components/game_object.cpp

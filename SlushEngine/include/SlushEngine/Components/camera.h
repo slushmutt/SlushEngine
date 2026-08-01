@@ -2,13 +2,14 @@
 #include <SlushEngine/Components/component.h>
 #include <SlushEngine/export.hpp>
 #include <raylib.h>
+#include <SlushEngine/math.h>
 
 namespace SlushEngine {
     class SLUSH_EXPORT Camera : public Component {
         public: 
             Camera3D camera = {0};
-            Vector3 target = (Vector3){ 0.0f, 0.0f, 0.0f };
-            Vector3 up = (Vector3){ 0.0f, 1.0f, 0.0f };
+            Vector3 target = { 0.0f, 0.0f, 0.0f };
+            Vector3 up = { 0.0f, 1.0f, 0.0f };
             float fov = 45.0f;
             int projection = CAMERA_PERSPECTIVE;
             Camera(Vector3 target, float fov);

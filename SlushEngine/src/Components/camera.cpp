@@ -4,9 +4,10 @@
 #include <print>
 #include <raylib.h>
 #include <raymath.h>
+#include <SlushEngine/math.h>
 #include <SlushEngine/Utility/raylib_extensions.h>
 
-SlushEngine::Camera::Camera(Vector3 Target, float Fov){
+SlushEngine::Camera::Camera(SlushEngine::Vector3 Target, float Fov){
     target = Target;
     fov = Fov;
     camera.target = target;

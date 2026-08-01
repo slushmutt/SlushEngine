@@ -28,7 +28,7 @@ SlushEngine::Rigidbody::Rigidbody(Transform *transform, const JPH::ConvexShapeSe
     shape = shape_result.Get();
     body_settings = (JPH::BodyCreationSettings){
         shape,
-        ToJolt(transform->position),
+        transform->position,
         JPH::Quat::sIdentity(),
         motion_type,
         object_layer

@@ -1,7 +1,6 @@
 #include <SlushEngine/Components/mesh_renderer.h>
 #include <SlushEngine/debug.h>
 #include <SlushEngine/Components/rigidbody.h>
-#include <print>
 #include <raylib.h>
 #include <raymath.h>
 #include <SlushEngine/Components/game_object.h>
