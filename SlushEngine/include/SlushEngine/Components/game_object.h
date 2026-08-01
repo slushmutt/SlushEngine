@@ -1,10 +1,8 @@
 #pragma once
 #include <cstdint>
 #include <memory>
-#include <print>
 #include <unordered_map>
 #include <typeindex>
-#include <vector>
 #include <SlushEngine/debug.h>
 #include <SlushEngine/Components/component.h>
 #include <SlushEngine/Utility/type_extension.h>

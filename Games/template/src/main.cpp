@@ -1,7 +1,6 @@
 #include <SlushEngine/application.h>
 
-int main() {
+int main(){
     SlushEngine::Application app;
-    app.Initialize(1280, 720, 60, "Sandbox");
-    return 0;
+    app.Initialize(1280, 720, 60, "New Game");
 }
