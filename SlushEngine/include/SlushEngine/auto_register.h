@@ -1,12 +1,12 @@
 #include <SlushEngine/export.hpp>
-#include <SlushEngine/behavior.h>
 #include <SlushEngine/core.h>
+
 namespace SlushEngine{
     template <typename T>
     class SLUSH_EXPORT AutoRegister {
     public:
         struct Registrar {
-            Registrar() {
+            Registrar(){
                 SlushEngine::Core::active_behaviors.push_back(new T());
             }
         };

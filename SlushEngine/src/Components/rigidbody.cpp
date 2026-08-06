@@ -9,42 +9,91 @@
 #include <Jolt/Physics/Collision/Shape/SphereShape.h>
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Body/BodyActivationListener.h>
-#include "Jolt/Math/Quat.h"
 #include "Jolt/Physics/Body/MotionType.h"
+#include "Jolt/Physics/Collision/Shape/ConvexShape.h"
+#include "Jolt/Physics/Collision/Shape/CylinderShape.h"
 #include "Jolt/Physics/EActivation.h"
+#include <SlushEngine/debug.h>
+#include <SlushEngine/core.h>
+#include <SlushEngine/math.h>
 #include <SlushEngine/Components/component.h>
 #include <SlushEngine/Components/transform.h>
+#include <memory>
 #include <raylib.h>
 #include <SlushEngine/Components/rigidbody.h>
 #include <SlushEngine/Components/game_object.h>
 #include <SlushEngine/Components/component.h>
-#include <SlushEngine/Utility/raylib_extensions.h>
 
-SlushEngine::Rigidbody::Rigidbody(Transform *transform, const JPH::ConvexShapeSettings* settings, JPH::BodyInterface* interface, JPH::EMotionType motion_type, JPH::ObjectLayer object_layer, JPH::EActivation activate){
-    activate = activate;
-    object_layer = object_layer;
-    motion_type = motion_type;
-    shape_result = settings->Create();
-    shape = shape_result.Get();
-    body_settings = (JPH::BodyCreationSettings){
-        shape,
-        transform->position,
-        JPH::Quat::sIdentity(),
-        motion_type,
-        object_layer
-    };
-    body_settings.mRestitution = .6f;
-    body_settings.mMotionQuality = JPH::EMotionQuality::Discrete;
-    body = interface->CreateBody(body_settings);
-    interface->AddBody(body->GetID(), activate);
+std::unique_ptr<JPH::ConvexShapeSettings> SlushEngine::Rigidbody::GetSettings(SlushEngine::Primitive primitive) {
+    auto a = owner->transform->scale;
+    std::unique_ptr<JPH::ConvexShapeSettings> r = nullptr;
+
+    SlushEngine::Vector3 half_extents = SlushEngine::Vector3(0.5f * a.x, 0.5f * a.y, 0.5f * a.z);
+
+
+
+    switch (primitive) {
+        case SlushEngine::Cube: 
+            r = std::make_unique<JPH::BoxShapeSettings>(half_extents); 
+            break;
+
+        case SlushEngine::Sphere: 
+            r = std::make_unique<JPH::SphereShapeSettings>(owner->transform->scale.x); 
+            break;
+
+        case SlushEngine::Cylinder: 
+            r = std::make_unique<JPH::CylinderShapeSettings>(half_extents.y, half_extents.x); 
+            break;
+
+        case SlushEngine::Plane: 
+            half_extents.y = 0.01f; 
+            r = std::make_unique<JPH::BoxShapeSettings>(half_extents);
+            break;
+        default:
+            r = nullptr;
+    }
+    return r;
+}
+SlushEngine::Primitive p;
+SlushEngine::Rigidbody::Rigidbody(SlushEngine::Primitive Primitive, JPH::EMotionType Motion_type, JPH::ObjectLayer Object_layer, JPH::EActivation Activate) {
+    activate = Activate;
+    object_layer = Object_layer;
+    motion_type = Motion_type;
+    
+    p = Primitive;
+}
+
+void SlushEngine::Rigidbody::Start() {
 }
 SlushEngine::Rigidbody::~Rigidbody(){}
 void SlushEngine::Rigidbody::Update(float dt){}
 void SlushEngine::Rigidbody::PhysicsUpdate(){
-    Transform *transform = owner->GetComponent<Transform>(); 
-    transform->position = ToRayLib(body->GetCenterOfMassPosition());
-    transform->rotation = ToRayLib(body->GetRotation());
+    owner->transform->position = body->GetCenterOfMassPosition();
+    owner->transform->rotation = body->GetRotation();
 }
-void SlushEngine::Rigidbody::Start(){}
-void SlushEngine::Rigidbody::Awake(){}
+void SlushEngine::Rigidbody::Awake(){
+    auto settings = GetSettings(p); 
+
+    if (!settings) return;
+
+    shape_result = settings->Create();
+    shape = shape_result.Get();
+
+    JPH::Vec3 jphPos(owner->transform->position.x, owner->transform->position.y, owner->transform->position.z);
+
+    body_settings = JPH::BodyCreationSettings(
+        shape,
+        jphPos,
+        JPH::Quat::sIdentity(),
+        motion_type,
+        object_layer
+    );
+
+    body_settings.mRestitution = 0.6f;
+    body_settings.mMotionQuality = JPH::EMotionQuality::Discrete;
+
+    body = SlushEngine::Core::body_interface->CreateBody(body_settings);
+    SlushEngine::Core::body_interface->AddBody(body->GetID(), activate);
+}
+
 

@@ -1,0 +1,21 @@
+/**
+ * @mainpage Slush Engine
+ * A small C++ game engine.
+ *  
+ * @section nav Getting Started!
+ * See @ref core for information on the most important features of the engine. \n
+ * See @ref application for information on how to create an empty application.
+ */
+
+/**
+ * @defgroup core Core
+ * @brief The core of the engine, mainly consits of engine lifecycle and application setup. 
+ *
+ */
+
+/**
+ * @defgroup application Application
+ * @ingroup core
+ * @brief The application setup, initializes a window and starts the game loop. 
+ *
+ */

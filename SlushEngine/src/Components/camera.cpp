@@ -1,21 +1,24 @@
 #include <SlushEngine/Components/camera.h>
 #include <SlushEngine/Components/transform.h>
 #include <SlushEngine/Components/game_object.h>
-#include <print>
 #include <raylib.h>
 #include <raymath.h>
 #include <SlushEngine/math.h>
-#include <SlushEngine/Utility/raylib_extensions.h>
 
-SlushEngine::Camera::Camera(SlushEngine::Vector3 Target, float Fov){
+SlushEngine::Camera::Camera(float Fov, SlushEngine::Vector3 Position, SlushEngine::Vector3 Target){
+    position = Position;
     target = Target;
     fov = Fov;
-    camera.target = target;
-    camera.projection = projection;
-    camera.fovy = fov;
-    camera.up = up;
+    camera = new Camera3D();
+
+    camera->target = target;
+    camera->position = position;
+    camera->projection = projection;
+    camera->fovy = fov;
+    camera->up = up;
 }
-void SlushEngine::Camera::Update(float dt){}
+void SlushEngine::Camera::Update(float dt){
+}
 void SlushEngine::Camera::Start(){
 }
 

@@ -11,6 +11,7 @@ target_sources(SlushEngine PRIVATE
     src/core.cpp
     src/input.cpp
     src/rendering.cpp
+    src/renderer.cpp
     src/physics.cpp
     src/behavior.cpp
     src/auto_register.cpp
@@ -23,7 +24,6 @@ target_sources(SlushEngine PRIVATE
     src/Components/mesh_renderer.cpp
     src/Components/camera.cpp
     src/Components/rigidbody.cpp
-    src/Utility/raylib_extensions.cpp
     src/Utility/type_extension.cpp
 )
 

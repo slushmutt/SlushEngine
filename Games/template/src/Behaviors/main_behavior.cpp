@@ -1,25 +1,19 @@
 #include "main_behavior.h"
-#include <Jolt/Jolt.h>
-#include <Jolt/Physics/Collision/Shape/BoxShape.h>
-#include <raylib.h>
 #include <SlushEngine/Components/camera.h>
 #include <SlushEngine/Components/transform.h>
-#include <SlushEngine/scene.h>
+#include <SlushEngine/Components/mesh_renderer.h>
+#include <SlushEngine/core.h>
 
-SlushEngine::Scene scene;
-auto camera_obj = std::make_unique<SlushEngine::GameObject>();
-SlushEngine::Camera *camera_cam;
-Camera3D camera;
+using namespace SlushEngine;
 
+Scene scene;
+SlushEngine::Camera *camera;
 void MainBehavior::Start(){
-    camera_cam = camera_obj->AddComponent<SlushEngine::Camera>((Vector3){5,0,5}, 90);
-    camera_obj->AddComponent<SlushEngine::Transform>();
-    camera = camera_cam->camera;
-    SlushEngine::Core::main_camera = &camera;
+    GameObject* camera_obj = scene.CreateObject();
 
-    scene.AddObject(std::move(camera_obj));
-}
+    camera = camera_obj->AddComponent<SlushEngine::Camera>(90, Vec3(0,100,0));
+    Core::main_camera = camera;
 
-void MainBehavior::Update(float dt){
-    UpdateCamera(SlushEngine::Core::main_camera, CAMERA_FREE);
+    auto cube = scene.CreateObject(GameObject::CreatePrimitive(Primitive::Cube, SlushEngine::Color(255,255,255,255), Vec3(0,-10,0), Vec3(100,1,100)));
+
 }

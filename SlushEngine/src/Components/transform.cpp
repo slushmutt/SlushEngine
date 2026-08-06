@@ -2,8 +2,8 @@
 #include <SlushEngine/math.h>
 #include <raylib.h>
 #include <raymath.h>
-#include <SlushEngine/Utility/raylib_extensions.h>
-SlushEngine::Transform::Transform(SlushEngine::Vector3 Position, SlushEngine::Vector3 Scale, ::Quaternion Rotation){
+
+SlushEngine::Transform::Transform(SlushEngine::Vector3 Position, SlushEngine::Vector3 Scale, Quaternion Rotation){
     position = Position;
     rotation = Rotation;
     scale = Scale;
@@ -18,5 +18,6 @@ SlushEngine::Vector3 SlushEngine::Transform::EulerAngles(bool deg){
 
 void SlushEngine::Transform::Awake() {}
 void SlushEngine::Transform::Start() {}
-void SlushEngine::Transform::Update(float dt) {}
+void SlushEngine::Transform::Update(float dt) {
+}
 void SlushEngine::Transform::PhysicsUpdate() {}

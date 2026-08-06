@@ -1,11 +1,12 @@
 #pragma once
 #include <SlushEngine/Components/component.h>
-#include <raylib.h>
 #include <SlushEngine/export.hpp>
+#include <SlushEngine/rendering.h>
+
 namespace SlushEngine {
     class SLUSH_EXPORT MeshRenderer : public Component {
         public:
-            Mesh mesh;
+            SlushEngine::Mesh mesh;
             Material material;
             MeshRenderer(Mesh mesh, Material material);
             void Awake() override;

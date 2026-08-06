@@ -29,6 +29,6 @@ include(cmake/Dependencies.cmake)
 add_subdirectory(SlushEngine)
 
 if(SLUSH_BUILD_GAMES)
-   add_subdirectory(Games/sandbox)
+    #add_subdirectory(Games/sandbox)
    add_subdirectory(Games/template)
 endif()

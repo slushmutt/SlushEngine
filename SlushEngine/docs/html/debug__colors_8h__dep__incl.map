@@ -1,0 +1,30 @@
+<map id="SlushEngine/include/SlushEngine/debug_colors.h" name="SlushEngine/include/SlushEngine/debug_colors.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="774,5,964,48"/>
+<area shape="rect" id="Node000002" href="$debug_8h.html" title=" " alt="" coords="707,96,855,139"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="840,58,803,98,800,94,835,60"/>
+<area shape="rect" id="Node000012" href="$debug__colors_8cpp.html" title=" " alt="" coords="879,96,1034,139"/>
+<area shape="poly" id="edge16_Node000001_Node000012" title=" " alt="" coords="900,56,939,96,934,95,899,62"/>
+<area shape="rect" id="Node000003" href="$game__object_8h.html" title=" " alt="" coords="454,187,630,245"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="718,144,614,189,612,184,713,146"/>
+<area shape="rect" id="Node000005" href="$application_8cpp.html" title=" " alt="" coords="157,384,364,411"/>
+<area shape="poly" id="edge14_Node000002_Node000005" title=" " alt="" coords="689,126,521,146,420,160,317,178,219,200,132,227,63,259,38,276,19,295,9,314,11,329,21,343,40,354,94,373,159,386,154,388,92,378,37,359,18,347,6,331,4,313,15,292,34,272,61,254,130,222,217,195,316,173,419,155,520,141,694,124"/>
+<area shape="rect" id="Node000008" href="$game__object_8cpp.html" title=" " alt="" coords="741,293,935,336"/>
+<area shape="poly" id="edge12_Node000002_Node000008" title=" " alt="" coords="790,152,815,245,832,294,827,291,810,246,787,156"/>
+<area shape="rect" id="Node000009" href="$mesh__renderer_8cpp.html" title=" " alt="" coords="960,293,1154,336"/>
+<area shape="poly" id="edge13_Node000002_Node000009" title=" " alt="" coords="799,150,830,205,859,243,907,273,962,295,957,295,905,278,855,247,825,208,797,155"/>
+<area shape="rect" id="Node000011" href="$rendering_8cpp.html" title=" " alt="" coords="868,203,1067,229"/>
+<area shape="poly" id="edge15_Node000002_Node000011" title=" " alt="" coords="834,143,946,202,940,202,834,149"/>
+<area shape="rect" id="Node000004" href="$scene_8h.html" title=" " alt="" coords="299,293,447,336"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="481,252,410,295,408,290,476,254"/>
+<area shape="poly" id="edge10_Node000003_Node000005" title=" " alt="" coords="436,225,399,235,358,249,321,269,288,295,274,316,267,340,262,385,258,382,261,339,269,314,284,292,318,264,356,244,397,230,441,223"/>
+<area shape="rect" id="Node000006" href="$scene_8cpp.html" title=" " alt="" coords="391,384,571,411"/>
+<area shape="poly" id="edge11_Node000003_Node000006" title=" " alt="" coords="525,258,513,294,486,386,482,382,508,292,521,262"/>
+<area shape="rect" id="Node000007" href="$camera_8cpp.html" title=" " alt="" coords="522,293,717,336"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="575,255,606,294,601,292,573,260"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="645,248,777,293,772,293,644,253"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="646,234,961,295,956,296,645,239"/>
+<area shape="rect" id="Node000010" href="$rigidbody_8cpp.html" title=" " alt="" coords="29,293,223,336"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="437,243,216,295,215,290,440,239"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="334,345,279,386,277,381,329,346"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="414,343,466,384,461,383,412,348"/>
+</map>

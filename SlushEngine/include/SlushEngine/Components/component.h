@@ -1,7 +1,7 @@
 #pragma once
 #include <SlushEngine/export.hpp>
 namespace SlushEngine{
-    class SLUSH_EXPORT GameObject;
+    class GameObject;
 
     class SLUSH_EXPORT Component{
         public:

@@ -1,0 +1,5 @@
+<map id="SlushEngine::Behavior" name="SlushEngine::Behavior">
+<area shape="rect" id="Node000001" title="Behaviors are the main class that game scripts will derive from." alt="" coords="6,5,160,32"/>
+<area shape="rect" id="Node000002" href="$classSlushEngine_1_1Renderer.html" title=" " alt="" coords="5,80,161,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,46,86,81,80,79,81,50"/>
+</map>

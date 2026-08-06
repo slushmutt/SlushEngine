@@ -5,6 +5,7 @@ CompileFlags:
     -I /home/skye/Code/C/SlushEngine/build/_deps/jolt-src/,
     -DJPH_DEBUG,
     -DJPH_USE_AVX2,
+    -Wdocumentation,
 ]
   Remove:
     - -fmodules-ts

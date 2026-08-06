@@ -1,4 +1,3 @@
-#include <cmath>
 #include <cstdlib>
 #include <ctime>
 #include <raylib.h>
@@ -15,10 +14,8 @@
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Body/BodyActivationListener.h>
 #include <raymath.h>
-#include "Jolt/Math/Vec3.h"
 #include "Jolt/Physics/Body/BodyInterface.h"
-#include "Jolt/Physics/EActivation.h"
-#include "imgui.h"
+#include "SlushEngine/Components/camera.h"
 #include <SlushEngine/application.h>
 #include <SlushEngine/Components/game_object.h>
 #include <SlushEngine/Components/rigidbody.h>
@@ -27,13 +24,10 @@
 #include <SlushEngine/input.h>
 #include <SlushEngine/scene.h>
 #include <SlushEngine/physics.h>
-#include <SlushEngine/Utility/raylib_extensions.h>
 #include <SlushEngine/behavior.h>
 
-
-
-
 void SlushEngine::Application::Initialize(int width, int height, int fps, const char *window_title){
+    TraceLogLevel(LOG_NONE);
     // check for most deadly issues that are hard to debug.
     SlushEngine::Core::active_behaviors.size() <= 0 ? SlushEngine::Debug::Fatal("No behaviors found, aborting...") : void(); 
     SlushEngine::Core::active_scenes.size() <= 0 ? SlushEngine::Debug::Fatal("No scenes found, aborting...") : void(); 
@@ -55,6 +49,7 @@ void SlushEngine::Application::Initialize(int width, int height, int fps, const 
 
 
     // start the game loop
+    GameObject::InitalizePrimitives();
     Loop();
 }
 
@@ -92,6 +87,7 @@ void SlushEngine::Application::Loop(){
         for(Scene *scene: SlushEngine::Core::active_scenes){
             scene->Start();
         }
+
     float physics_accumulator = 0.0f;
     while(!WindowShouldClose()) {
 
@@ -109,9 +105,10 @@ void SlushEngine::Application::Loop(){
         BeginDrawing();
         rlImGuiBegin();
 
+        UpdateCamera(Core::main_camera->camera, Core::main_camera->mode);
         // 3d setup
-        BeginMode3D(*SlushEngine::Core::main_camera);
-        ClearBackground(RAYWHITE);
+        BeginMode3D(*Core::main_camera->camera);
+        ClearBackground(::BLACK);
         // run update and physics update functions on all behaviors and components
 
         for(auto *behavior: SlushEngine::Core::active_behaviors){
