@@ -33,7 +33,7 @@ void SlushEngine::Application::Initialize(int width, int height, int fps, const 
     SlushEngine::Core::active_scenes.size() <= 0 ? SlushEngine::Debug::Fatal("No scenes found, aborting...") : void(); 
     srand(time(0)); // generate random seed for random numbers.
     JPH::RegisterDefaultAllocator(); // allocate default memory for the physics system.
-    SetConfigFlags(FLAG_FULLSCREEN_MODE);  
+    // SetConfigFlags(FLAG_FULLSCREEN_MODE);  
     InitWindow(width, height, window_title);
     //running awake on all game scripts and Components.
     for(auto *behavior: SlushEngine::Core::active_behaviors){

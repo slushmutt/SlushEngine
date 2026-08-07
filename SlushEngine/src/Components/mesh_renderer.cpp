@@ -7,7 +7,7 @@
 #include <SlushEngine/Components/transform.h>
 #include <SlushEngine/rendering.h>
 #include <renderer.h>
-SlushEngine::MeshRenderer::MeshRenderer(Mesh Mesh, Material Material){
+SlushEngine::MeshRenderer::MeshRenderer(::Mesh Mesh, ::Material Material){
     mesh = Mesh;
     material = Material;
 }

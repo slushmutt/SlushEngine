@@ -31,8 +31,9 @@ namespace SlushEngine {
             Vector3 up = { 0.0f, 1.0f, 0.0f };
             float fov = 75.0f;
             int projection = CAMERA_PERSPECTIVE;
-            int mode = CAMERA_FREE;
+            int mode = CAMERA_CUSTOM;
             Camera(float fov = 75, Vector3 position = {0,0,0}, Vector3 target = {5,0,0});
+            Vector3 SetRotation(Vec3 euler);
             void Awake() override;
             void Start() override;
             void Update(float dt) override;

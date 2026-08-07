@@ -18,6 +18,25 @@ SlushEngine::Camera::Camera(float Fov, SlushEngine::Vector3 Position, SlushEngin
     camera->up = up;
 }
 void SlushEngine::Camera::Update(float dt){
+    position = camera->position;
+    target = camera->target;
+    auto look_matrix = MatrixLookAt(camera->position, camera->target, camera->up);
+    auto world_matrix = MatrixInvert(look_matrix); 
+    auto look_quat = QuaternionFromMatrix(world_matrix);
+    owner->transform->rotation = look_quat;
+}
+
+Vec3 SlushEngine::Camera::SetRotation(Vec3 euler){
+    float yaw = euler.x * DEG2RAD;
+    float pitch = euler.y * DEG2RAD;
+    float roll = euler.z * DEG2RAD;
+    float phi = pitch;
+    float theta = roll;
+
+    float x = position.x + (cos(phi) * cos(theta));
+    float z = position.z + (cos(phi) * sin(theta));
+    float y = position.y + (sin(phi));
+    return camera->target = Vec3(x,y,z);
 }
 void SlushEngine::Camera::Start(){
 }

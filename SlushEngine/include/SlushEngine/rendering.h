@@ -13,7 +13,7 @@ extern "C"{
 }
 
 namespace SlushEngine {
-    struct Color {
+    struct SLUSH_EXPORT Color {
         unsigned char r;        
         unsigned char g;        
         unsigned char b;        
@@ -29,7 +29,7 @@ namespace SlushEngine {
         operator ::Color() const;
     };
 
-    struct Texture {
+    struct SLUSH_EXPORT Texture {
         unsigned int id;        
         int width;              
         int height;             
@@ -50,14 +50,14 @@ namespace SlushEngine {
         operator ::Texture() const;
     };
 
-    struct Shader {
+    struct SLUSH_EXPORT Shader {
         unsigned int id;        
         int *locs;              
 
         operator ::Shader() const;
 
     };
-    struct MaterialMap {
+    struct SLUSH_EXPORT MaterialMap {
         Texture texture;      
         Color color;            
         float value;            
@@ -67,7 +67,7 @@ namespace SlushEngine {
         MaterialMap(const ::MaterialMap& mm);
 
     };
-    struct Material {
+    struct SLUSH_EXPORT Material {
         Shader shader;          
         MaterialMap *maps;      
         float params[4];        
@@ -91,7 +91,7 @@ namespace SlushEngine {
         MATERIAL_MAP_BRDF               
     } MaterialMapIndex;
 
-    struct Mesh {
+    struct SLUSH_EXPORT Mesh {
         int vertexCount;        
         int triangleCount;      
 

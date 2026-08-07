@@ -9,6 +9,7 @@
 #include <Jolt/Physics/Collision/Shape/SphereShape.h>
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Body/BodyActivationListener.h>
+#include "Jolt/Physics/Body/MotionQuality.h"
 #include "Jolt/Physics/Body/MotionType.h"
 #include "Jolt/Physics/Collision/Shape/ConvexShape.h"
 #include "Jolt/Physics/Collision/Shape/CylinderShape.h"
@@ -55,13 +56,26 @@ std::unique_ptr<JPH::ConvexShapeSettings> SlushEngine::Rigidbody::GetSettings(Sl
     return r;
 }
 SlushEngine::Primitive p;
-SlushEngine::Rigidbody::Rigidbody(SlushEngine::Primitive Primitive, JPH::EMotionType Motion_type, JPH::ObjectLayer Object_layer, JPH::EActivation Activate) {
+SlushEngine::Rigidbody::Rigidbody(SlushEngine::Primitive Primitive, MotionType Motion_type, JPH::ObjectLayer Object_layer, JPH::EActivation Activate) {
     activate = Activate;
     object_layer = Object_layer;
     motion_type = Motion_type;
     
     p = Primitive;
 }
+
+void SlushEngine::Rigidbody::SetPosition(Vector3 pos){
+    SlushEngine::Core::body_interface->SetPosition(this->body->GetID(), pos, this->activate);
+}
+
+void SlushEngine::Rigidbody::SetLinearVelocity(Vector3 vel){
+    SlushEngine::Core::body_interface->SetLinearVelocity(this->body->GetID(), vel);
+}
+
+SlushEngine::Vector3 SlushEngine::Rigidbody::GetPosition(){
+    return (Vector3) body->GetPosition();
+}
+
 
 void SlushEngine::Rigidbody::Start() {
 }
@@ -85,11 +99,11 @@ void SlushEngine::Rigidbody::Awake(){
         shape,
         jphPos,
         JPH::Quat::sIdentity(),
-        motion_type,
+        (JPH::EMotionType) motion_type,
         object_layer
     );
 
-    body_settings.mRestitution = 0.6f;
+    body_settings.mRestitution = 0.1f;
     body_settings.mMotionQuality = JPH::EMotionQuality::Discrete;
 
     body = SlushEngine::Core::body_interface->CreateBody(body_settings);

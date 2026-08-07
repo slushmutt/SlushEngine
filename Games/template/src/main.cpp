@@ -2,5 +2,5 @@
 
 int main(){
     SlushEngine::Application app;
-    app.Initialize(1280, 720, 0, "New Game");
+    app.Initialize(1920, 1080, 0, "New Game");
 }

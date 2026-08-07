@@ -41,13 +41,13 @@ namespace SlushEngine {
             template <typename... T>
             static void Info(impl::LogFormat f, T&&... args) {
                 if(CurrentLogLevel <= 2)
-                    impl::BridgeLogMessage(true, "INFO", f.loc, f.fmt, std::make_format_args(args...));        
+                    impl::BridgeLogMessage(false, "INFO", f.loc, f.fmt, std::make_format_args(args...));        
             }
 
             template <typename... T>
             static void Warning(impl::LogFormat f, T&&... args) {
                 if(CurrentLogLevel <= 3)
-                    impl::BridgeLogMessage(false, "WARNING", f.loc, f.fmt, std::make_format_args(args...));        
+                    impl::BridgeLogMessage(true, "WARNING", f.loc, f.fmt, std::make_format_args(args...));        
             }
 
             template <typename... T>

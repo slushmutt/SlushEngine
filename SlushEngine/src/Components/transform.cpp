@@ -19,5 +19,7 @@ SlushEngine::Vector3 SlushEngine::Transform::EulerAngles(bool deg){
 void SlushEngine::Transform::Awake() {}
 void SlushEngine::Transform::Start() {}
 void SlushEngine::Transform::Update(float dt) {
+    forward = Vector3RotateByQuaternion(Vec3::forward, rotation);
+    right = Vector3RotateByQuaternion(Vec3::right, rotation);
 }
 void SlushEngine::Transform::PhysicsUpdate() {}

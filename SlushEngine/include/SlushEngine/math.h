@@ -64,6 +64,18 @@ namespace SlushEngine {
                 return v;
             }
 
+            Vector3 operator*(const float vec){
+                Vector3 v;
+                v.x = vec * this->x;
+                v.y = vec * this->y;
+                v.z = vec * this->z;
+                return v;
+            }
+
+            static Vector3 forward;
+            static Vector3 right;
+
+
             operator ::Vector3() const;
             operator JPH::Vec3() const;
         };
@@ -104,7 +116,7 @@ struct std::formatter<SlushEngine::Vector3> {
         return ctx.begin();
     }
     auto format(const SlushEngine::Vector3& p, std::format_context& ctx) const {
-        return std::format_to(ctx.out(), "({}, {}, {})", p.x, p.y, p.z);
+        return std::format_to(ctx.out(), "({:.2f}, {:.2f}, {:.2f})", p.x, p.y, p.z);
     }
     auto format(const SlushEngine::Vector2& p, std::format_context& ctx) const {
         return std::format_to(ctx.out(), "({}, {})", p.x, p.y);

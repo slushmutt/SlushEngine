@@ -8,6 +8,8 @@ namespace SlushEngine {
             Vector3 position = {0.0f, 0.0f, 0.0f};
             Quaternion rotation = {0.0f, 0.0f, 0.0f, 1.0f};
             Vector3 scale = {1.0f, 1.0f, 1.0f};
+            Vector3 forward;
+            Vector3 right;
             void Rotate(float x, float y, float z);
             Vector3 EulerAngles(bool deg = false);
 

@@ -27,11 +27,11 @@ namespace SlushEngine {
     }
 
 
-    static Mesh cube_mesh; 
-    static Mesh sphere_mesh; 
-    static Mesh cylinder_mesh;
-    static Mesh plane_mesh;
 
+        static Mesh cube_mesh; 
+        static Mesh sphere_mesh; 
+        static Mesh cylinder_mesh;
+        static Mesh plane_mesh;
     void GameObject::InitalizePrimitives(){
         cube_mesh = GenMeshCube(1,1,1);
         cube_mesh.Upload(false);
@@ -60,7 +60,7 @@ namespace SlushEngine {
         obj->transform->scale = scale;
         obj->transform->position = position;
         obj->transform->rotation = rotation;
-        obj->AddComponent<MeshRenderer>(selected_mesh,m);
+        obj->AddComponent<MeshRenderer>(selected_mesh,m)->material.maps[MATERIAL_MAP_ALBEDO].color = color;
         return *obj;
     }
 }

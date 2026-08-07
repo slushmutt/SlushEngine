@@ -52,6 +52,8 @@ namespace SlushEngine {
     Vector3::operator JPH::Vec3() const {
         return JPH::Vec3(x, y, z);
     }
+    Vector3 Vector3::forward = Vector3(0,0,1);
+    Vector3 Vector3::right = Vector3(1,0,0);
 
     Quaternion::Quaternion(const ::Vector4& q) 
         : x(q.x), y(q.y), z(q.z), w(q.w) {}

@@ -102,6 +102,7 @@ namespace SlushEngine {
             return ptr;
         }
 
+
         static void InitalizePrimitives();
         static GameObject& CreatePrimitive(Primitive primitive, Color color, Vector3 position = Vector3(), Vector3 scale = Vector3(1,1,1), Quaternion rotation = Quaternion(0,0,0,1));
 
