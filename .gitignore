@@ -1,3 +1,4 @@
 build/
 build-shared/
+SlushEngine/docs 
 compile_commands.json
