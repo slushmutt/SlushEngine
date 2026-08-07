@@ -1,4 +1,0 @@
-<map id="Application" name="Application">
-<area shape="rect" id="Node000001" title="The application setup, initializes a window and starts the game loop." alt="" coords="103,5,188,32"/>
-<area shape="rect" id="Node000002" href="$group__core.html" title="The core of the engine, mainly consits of engine lifecycle and application setup." alt="" coords="5,5,55,32"/>
-</map>

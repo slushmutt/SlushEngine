@@ -1,4 +1,0 @@
-<map id="Behavior" name="Behavior">
-<area shape="rect" id="Node000001" title="Behavior is the main class that game scripts will derive from." alt="" coords="103,5,175,32"/>
-<area shape="rect" id="Node000002" href="$group__core.html" title="The core of the engine, mainly consits of engine lifecycle and application setup." alt="" coords="5,5,55,32"/>
-</map>
